@@ -12,97 +12,61 @@ function updateClock() {
 setInterval(updateClock, 1000);
 updateClock();
 
-
-// CARING MESSAGES
-const messages = [
-    "Have you drunk enough water? 💧",
-    "Please don't skip your meals. ❤️",
-    "Take a little break. You deserve it! 🫂",
-    "Don't forget to smile today! 😊",
-    "Your health is important. Take care! 💗",
-    "Eat well and stay happy! 🥰",
-    "You are special. Never forget that! ❤️"
+// DAILY REMINDERS
+const reminders = [
+    { hour: 8, minute: 0, title: "Breakfast Time 🍳", message: "Please don't skip breakfast. ❤️" },
+    { hour: 13, minute: 0, title: "Lunch Time 🍱", message: "Have your lunch on time!" },
+    { hour: 16, minute: 0, title: "Take a Break ☕", message: "Relax for a little while. 🫂" },
+    { hour: 20, minute: 0, title: "Dinner Time 🍽️", message: "Eat well and stay healthy. ❤️" },
+    { hour: 22, minute: 0, title: "Sleep Time 🌙", message: "Good night! Sweet dreams. 💗" }
 ];
 
-
-// NOTIFICATION BUTTON
-const button = document.createElement("button");
-
-button.textContent = "🔔 Enable My Reminders";
-
-button.style.cssText = `
-    display:block;
-    width:100%;
-    padding:16px;
-    margin-top:20px;
-    border:none;
-    border-radius:15px;
-    background:linear-gradient(135deg,#e88ab5,#b99ae8);
-    color:white;
-    font-size:16px;
-    font-weight:bold;
-`;
-
-document.querySelector(".love-message")
-    .appendChild(button);
-
-
 // ENABLE NOTIFICATIONS
-button.addEventListener("click", async function () {
-
+async function enableReminders() {
     if (!("Notification" in window)) {
-        alert("Your browser does not support notifications.");
+        alert("Notifications are not supported.");
         return;
     }
 
     const permission = await Notification.requestPermission();
 
     if (permission === "granted") {
-
-        new Notification("Remind Me 🫂", {
-            body: "Someone cares about you! Take care of yourself. ❤️"
-        });
-
-        button.textContent = "❤️ Reminders Enabled";
-
-        startReminders();
-
+        alert("Notifications enabled! ❤️");
+        startWaterReminder();
+        checkDailyReminders();
     } else {
-        alert("Please allow notifications in browser settings.");
+        alert("Please allow notifications.");
     }
-});
-
+}
 
 // WATER REMINDER
-let reminderStarted = false;
-
-function startReminders() {
-
-    if (reminderStarted) return;
-
-    reminderStarted = true;
-
+function startWaterReminder() {
     setInterval(() => {
-
-        if (Notification.permission === "granted") {
-
-            new Notification("Water Time 💧", {
-                body: "Hey! Drink some water. Stay hydrated! ❤️"
-            });
-
-        }
-
+        new Notification("Drink Water 💧", {
+            body: "Please drink some water. Take care! ❤️"
+        });
     }, 60 * 60 * 1000);
 }
 
+// CHECK DAILY REMINDERS
+function checkDailyReminders() {
+    setInterval(() => {
+        const now = new Date();
 
-// RANDOM CARING MESSAGE
-setInterval(() => {
+        reminders.forEach(reminder => {
+            const key = `remind-${now.toDateString()}-${reminder.hour}`;
 
-    const message = messages[
-        Math.floor(Math.random() * messages.length)
-    ];
+            if (
+                now.getHours() === reminder.hour &&
+                now.getMinutes() === reminder.minute &&
+                !localStorage.getItem(key)
+            ) {
+                new Notification(reminder.title, {
+                    body: reminder.message
+                });
 
-    console.log("Remind Me 🫂: " + message);
-
-}, 30 * 60 * 1000);
+                localStorage.setItem(key, "done");
+            }
+        });
+    }, 30000);
+}
