@@ -5,6 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Remind Me 🫂</title>
     <link rel="stylesheet" href="styles.css">
+<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+
+<script>
+window.OneSignalDeferred = window.OneSignalDeferred || [];
+OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({
+        appId: "f0661ba6-ef32-49d0-8c36-db8f88b43a8b",
+        serviceWorkerParam: {
+            scope: "/Remind-me-/"
+        },
+        serviceWorkerPath: "OneSignalSDKWorker.js"
+    });
+});
+</script>
 </head>
 
 <body>
