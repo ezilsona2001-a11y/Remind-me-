@@ -1,0 +1,10 @@
+{
+  "name": "Remind Me",
+  "short_name": "Remind Me 🫂",
+  "description": "A little reminder, a lot of love.",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffe4ec",
+  "theme_color": "#f7a9c4",
+  "orientation": "portrait"
+}
