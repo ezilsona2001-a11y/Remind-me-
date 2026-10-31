@@ -15,7 +15,10 @@ OneSignalDeferred.push(async function(OneSignal) {
         serviceWorkerParam: {
             scope: "/Remind-me-/"
         },
-        serviceWorkerPath: "OneSignalSDKWorker.js"
+        serviceWorkerPath: "/Remind-me-/OneSignalSDKWorker.js",
+        notifyButton: {
+            enable: true
+        }
     });
 });
 </script>
