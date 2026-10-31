@@ -70,3 +70,51 @@ function checkDailyReminders() {
         });
     }, 30000);
 }
+// REGISTER SERVICE WORKER
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", async () => {
+        try {
+            const registration =
+                await navigator.serviceWorker.register("./service-worker.js");
+
+            console.log("Service Worker Registered ❤️", registration);
+
+        } catch (error) {
+            console.error("Service Worker Error:", error);
+        }
+    });
+}
+
+
+// ADD NOTIFICATION BUTTON
+const notifyButton = document.createElement("button");
+
+notifyButton.textContent = "🔔 Enable Notifications";
+
+notifyButton.style.cssText = `
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    border: none;
+    border-radius: 15px;
+    background: #d65b91;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+`;
+
+document.querySelector(".love-message").appendChild(notifyButton);
+
+
+notifyButton.addEventListener("click", async () => {
+
+    const permission = await Notification.requestPermission();
+
+    if (permission === "granted") {
+        alert("Notification permission enabled! ❤️");
+        notifyButton.textContent = "❤️ Notifications Allowed";
+    } else {
+        alert("Please allow notifications.");
+    }
+
+});
